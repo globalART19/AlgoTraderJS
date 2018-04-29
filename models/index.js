@@ -15,6 +15,10 @@ const User = db.define('users', {
   email: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false
   }
 })
 
@@ -85,7 +89,7 @@ const UserTrade = db.define('usertrades', {
   }
 })
 
-UserTrade.belongsTo(User, { as: 'usertrade' })
+UserTrade.belongsTo(User, { as: 'userTrade' })
 
 UserTrade.beforeValidate((tradeObj) => {
   tradeObj.price = +tradeObj.price

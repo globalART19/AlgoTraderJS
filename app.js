@@ -2,14 +2,13 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const models = require('./models')
-const router = require('./routes/main')
-const views = require('./views')
+const routes = require('./routes')
 const app = express()
 
 app.use(morgan('dev'))
 app.use(bodyParser())
 app.use(express.static(__dirname + '/public'))
-app.use('/', router)
+app.use('/', routes)
 
 const PORT = 1337
 

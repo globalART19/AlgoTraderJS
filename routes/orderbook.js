@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const { db } = require('../models')
-const { user } = require('../views')
+const { orderBook } = require('../views')
 
 router.get('/', async (req, res, next) => {
   try {
-    res.send(user('User Page!'))
+    res.send(orderBook('Order Book Page!'))
   } catch (e) {
     next(e)
   }

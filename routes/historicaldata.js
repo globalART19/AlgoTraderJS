@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const { db } = require('../models')
-const { user } = require('../views')
+const { historicalData } = require('../views')
 
 router.get('/', async (req, res, next) => {
   try {
-    res.send(user('User Page!'))
+    res.send(historicalData('Historical Data Page!'))
   } catch (e) {
     next(e)
   }

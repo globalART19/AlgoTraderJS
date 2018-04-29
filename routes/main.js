@@ -5,7 +5,7 @@ const { main } = require('../views')
 
 router.get('/', async (req, res, next) => {
   try {
-    res.send(main('Starting Up!'))
+    res.send(main('Main Page - Starting Up!'))
   } catch (e) {
     next(e)
   }

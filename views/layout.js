@@ -23,9 +23,10 @@ module.exports = (content) => html`
                 <div id="nav-items" class="collapse navbar-collapse">
                   <ul class="nav navbar-nav">
                     <li><a href="/user/">User Home</a></li>
-                    <li><a href="/historicaltesting/">Historical Testing</a></li>
                     <li><a href="/algorithm/">Algorithm</a></li>
+                    <li><a href="/historicaldata/">Historical Testing</a></li>
                     <li><a href="/charts">Charts</a></li>
+                    <li><a href="/orderbook">Order Book</a></li>
                   </ul>
                 </div>
               </div>
@@ -35,8 +36,12 @@ module.exports = (content) => html`
             </div>
             <hr />
             <div id="footer" class="container text-muted">
-              AlgoTraderJS by Andrew Trahan
-              Styling ripped from Fullstack Academy Wikistacks Workshop
-          </div>
+              <div>
+                AlgoTraderJS by Andrew Trahan
+              </div>
+              <div>
+                Styling ripped from Fullstack Academy Wikistacks Workshop
+              </div>
+            </div>
           </body>
 </html>`
