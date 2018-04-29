@@ -1,13 +1,13 @@
 const html = require('html-template-tag')
 
 module.exports = (content) => html`
-  < !DOCTYPE html >
+  <!DOCTYPE html>
     <html lang="en">
       <head>
         <title>AlgoTraderJS</title>
         <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
           <link href="/stylesheets/style.css" rel="stylesheet">
-  </head>
+      </head>
           <body>
             <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
               <div class="container">
@@ -37,6 +37,6 @@ module.exports = (content) => html`
             <div id="footer" class="container text-muted">
               AlgoTraderJS by Andrew Trahan
               Styling ripped from Fullstack Academy Wikistacks Workshop
-    </div>
+          </div>
           </body>
 </html>`

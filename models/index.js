@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const db = new Sequelize('postgres:localhost:5432/algoTraderJS') //can add ,{logging: false}
+const db = new Sequelize('postgres:localhost:5432/algoTraderJS', { logging: false })
 
 async function dbAuthenticator() {
   await db.authenticate().then(() => { console.log('Connected to algoTraderJS database') })
@@ -24,11 +24,11 @@ const UserTrade = db.define('usertrades', {
     allowNull: false
   },
   price: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   size: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   productId: {
@@ -43,7 +43,7 @@ const UserTrade = db.define('usertrades', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  type: {
+  tradeType: {
     type: Sequelize.STRING,
     allowNull: false
   },
@@ -55,23 +55,23 @@ const UserTrade = db.define('usertrades', {
     type: Sequelize.BOOLEAN,
     allowNull: false
   },
-  createdAt: {
+  tradeCreatedAt: {
     type: Sequelize.STRING,
     allowNull: false
   },
   fillFees: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   filledSize: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   executedValue: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
-  status: {
+  tradeStatus: {
     type: Sequelize.STRING,
     allowNull: false
   },
@@ -85,15 +85,15 @@ const UserTrade = db.define('usertrades', {
   }
 })
 
-UserTrade.belongsTo(User, { as: 'trade' })
+UserTrade.belongsTo(User, { as: 'usertrade' })
 
-// UserTrade.beforeValidate((tradeObj) => {
-//   tradeObj.price = +tradeObj.price
-//   tradeObj.size = +tradeObj.size
-//   tradeObj.fillFees = +tradeObj.fillFees
-//   tradeObj.filledSize = +tradeObj.filledSize
-//   tradeObj.executedValue = +tradeObj.executedValue
-// })
+UserTrade.beforeValidate((tradeObj) => {
+  tradeObj.price = +tradeObj.price
+  tradeObj.size = +tradeObj.size
+  tradeObj.fillFees = +tradeObj.fillFees
+  tradeObj.filledSize = +tradeObj.filledSize
+  tradeObj.executedValue = +tradeObj.executedValue
+})
 
 const HistoricalData = db.define('historicaldata', {
   time: {
@@ -101,35 +101,35 @@ const HistoricalData = db.define('historicaldata', {
     allowNull: false
   },
   low: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   high: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   open: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   close: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   volume: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false
   }
 })
 
-// HistoricalData.beforeValidate((dataPoint) => {
-//   let date = new Date(0)
-//   dataPoint.time = date.setUTCSeconds(dataPoint.time)
-// })
+HistoricalData.beforeValidate((dataPoint) => {
+  let date = new Date(0)
+  dataPoint.time = date.setUTCSeconds(dataPoint.time)
+})
 
 
 const Order = db.define('orders', {
-  type: {
+  orderType: {
     type: Sequelize.STRING,
     allowNull: false
   },
@@ -158,11 +158,11 @@ const Order = db.define('orders', {
     allowNull: false
   },
   size: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   price: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   side: {
@@ -171,10 +171,10 @@ const Order = db.define('orders', {
   }
 })
 
-// Order.beforeValidate((order) => {
-//   order.time = Date(order.time)
-//   order.size = +order.size
-//   order.price = +order.price
-// })
+Order.beforeValidate((order) => {
+  order.time = Date(order.time)
+  order.size = +order.size
+  order.price = +order.price
+})
 
 module.exports = { db }
