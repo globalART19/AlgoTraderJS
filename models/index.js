@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const db = new Sequelize('postgres:localhost:5432/algoTraderJS', { logging: false })
+const userdashboard = require('./userdashboard')
 
 async function dbAuthenticator() {
   await db.authenticate().then(() => { console.log('Connected to algoTraderJS database') })
@@ -126,10 +127,10 @@ const HistoricalData = db.define('historicaldata', {
   }
 })
 
-HistoricalData.beforeValidate((dataPoint) => {
-  let date = new Date(0)
-  dataPoint.time = date.setUTCSeconds(dataPoint.time)
-})
+// HistoricalData.beforeValidate((dataPoint) => {
+//   let date = new Date(0)
+//   dataPoint.time = date.setUTCSeconds(+dataPoint.time)
+// })
 
 
 const Order = db.define('orders', {

@@ -11,4 +11,13 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/update', async (req, res, next) => {
+  try {
+    await
+      await db.historicalData.findOrCreate({ where: { time: data[0] } })
+  } catch (e) {
+    next(e)
+  }
+})
+
 module.exports = router
