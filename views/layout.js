@@ -22,11 +22,15 @@ module.exports = (content) => html`
                 </div>
                 <div id="nav-items" class="collapse navbar-collapse">
                   <ul class="nav navbar-nav">
-                    <li><a href="/user/">User Home</a></li>
+                    <li><a href="/user/">User Dashboard</a></li>
+                    <li><a href="/market">Current Market State</a></li>
                     <li><a href="/algorithm/">Algorithm</a></li>
                     <li><a href="/historicaldata/">Historical Testing</a></li>
-                    <li><a href="/charts">Charts</a></li>
-                    <li><a href="/orderbook">Order Book</a></li>
+                  </ul>
+                  <ul id="right-nav-items" class="nav navbar-nav">
+                    <li><a href="/login">Log In</a></li>
+                    <li><a href="/signup">Sign Up</a></li>
+                    <li><a href="/support">Support</a></li>
                   </ul>
                 </div>
               </div>
@@ -41,6 +45,9 @@ module.exports = (content) => html`
               </div>
               <div>
                 Styling ripped from Fullstack Academy Wikistacks Workshop
+              </div>
+              <div>
+                Should put a site map down here at some point
               </div>
             </div>
           </body>
