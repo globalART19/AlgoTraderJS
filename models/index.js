@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
 const db = new Sequelize('postgres:localhost:5432/algoTraderJS', { logging: false })
-const userdashboard = require('./userdashboard')
+const Gdax = require('gdax')
+const publicClient = new Gdax.PublicClient()
 
 async function dbAuthenticator() {
   await db.authenticate().then(() => { console.log('Connected to algoTraderJS database') })
@@ -127,11 +128,51 @@ const HistoricalData = db.define('historicaldata', {
   }
 })
 
-// HistoricalData.beforeValidate((dataPoint) => {
-//   let date = new Date(0)
-//   dataPoint.time = date.setUTCSeconds(+dataPoint.time)
-// })
-
+HistoricalData.importHistory = async function (product, startDate, endDate, granualarity, forceUpdate = false) {
+  const bulkUpdateArray = []
+  try {
+    if (![60, 300, 900, 3600, 21600, 86400].includes(granualarity)) { throw 'Bad granularity' }
+    let startSetTime = startDate.getTime()
+    let endSetTime = endDate.getTime()
+    if ((endDate.getTime() - startDate.getTime()) / granularity > 300) {
+      endSetTime = startSetTime + 299 * granualarity
+    }
+    let count = 0
+    while (endSetTime <= endDate.getTime() || count === 0) {
+      let startISOTime = new Date(startSetTime).toISOString()
+      let endISOTime = new Date(endSetTime).toISOString()
+      let dataArray = await publicClient.getProductHistoricRates(
+        product,
+        {
+          start: startISOTime,
+          end: endISOTime,
+          granualarity: granualarity,
+        })
+      bulkUpdateArray.push([...dataArray])
+      startSetTime = endSetTime + granualarity
+      endSetTime += 300 * granualarity
+      count++
+    }
+  } catch (e) {
+    console.error('Invalid importHistory (probably date format)', e)
+  }
+  try {
+    console.log('Data push started')
+    return Promise.all(bulkUpdateArray.map(elem => {
+      let historicalDataInstance = {
+        time: elem[0],
+        low: elem[1],
+        high: elem[2],
+        open: elem[3],
+        close: elem[4],
+        volume: elem[5]
+      }
+      return HistoricalData.create(historicalDataInstance)
+    }))
+  } catch (e) {
+    console.error('Failed db push', e)
+  }
+}
 
 const Order = db.define('orders', {
   orderType: {

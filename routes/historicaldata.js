@@ -11,6 +11,16 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.post('/', async (req, res, next) => {
+  try {
+    await db.HistoricalData.importHistory('BTC-USD', new Date(2018, 4, 1, 0, 0, 0), new Date(2018, 5, 1, 0, 0, 0), 3600)
+    console.log('Data import complete?')
+    res.redirect('/')
+  } catch (e) {
+    next(e)
+  }
+})
+
 router.get('/update', async (req, res, next) => {
   try {
     await
