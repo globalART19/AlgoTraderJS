@@ -8,6 +8,87 @@ a {
   color: #00B7FF;
 }
 
+.productselector {
+  display: inline;
+  position: relative;
+  background: blue;
+}
+.chartoptions {
+  display: inline;
+  position: relative;
+  background: green;
+}
+.newsblurb {
+  margin: 1em;
+  background: rgb(194, 104, 119);
+}
+
+#perfchart {
+  margin: 1em;
+  height: calc(100% - 3em);
+  background: turquoise;
+  color: black;
+}
+#performanceblock {
+  position: relative;
+  background: black;
+  color: gainsboro;
+  width: 60%;
+  height: 30em;
+  padding: 1em;
+  margin-right: 2em;
+}
+#l2chart {
+  margin: 1em;
+  height: calc(100% - 3em);
+  background: yellow;
+  color: black;
+}
+#level2chart {
+  position: relative;
+  background: black;
+  color: gainsboro;
+  width: 60%;
+  height: 25em;
+  padding: 1em;
+  margin-right: 2em;
+  margin-top: 1em;
+}
+#performancedata {
+  position: relative;
+  width: 38%;
+  height: 50em;
+  padding: 1em;
+  background: gray;
+}
+#totalsbox {
+  height: 15em;
+  margin: 1em;
+  border: 1px solid black;
+}
+#tradehistorybox{
+  height: 30em;
+  margin: 1em;
+  border: 1px solid black;
+}
+#algosettings {
+  position: relative;
+  width: 60%;
+  height: 20em;
+  padding: 1em;
+  background: orange;
+}
+#ad {
+  position: relative;
+  width: 38%;
+  height: 20em;
+  padding: 1em;
+  background: green;
+}
+#news {
+  background: thistle;
+}
+
 #right-nav-items {
   float: right;
 }
