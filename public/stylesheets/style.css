@@ -15,7 +15,6 @@ a {
 }
 .chartoptions {
   display: inline;
-  position: relative;
   background: green;
 }
 .newsblurb {
@@ -23,11 +22,9 @@ a {
   background: rgb(194, 104, 119);
 }
 
-#perfchart {
-  margin: 1em;
-  height: calc(100% - 3em);
-  background: turquoise;
-  color: black;
+#pcnavbar {
+  display: flex;
+  width: 100%;
 }
 #performanceblock {
   position: relative;
@@ -37,6 +34,12 @@ a {
   height: 30em;
   padding: 1em;
   margin-right: 2em;
+}
+#perfchart {
+  margin: 1em;
+  height: calc(100% - 3em);
+  background: turquoise;
+  color: black;
 }
 #l2chart {
   margin: 1em;

@@ -4,6 +4,7 @@ const layout = require('./layout')
 module.exports = (content) => layout(html`
 <h1>${content}</h1>
 <div id='performanceblock'>
+  <div id='perfchart'>
   <div id='pcnavbar'>
     <div class='productselector'>BTC</div>
     <div class='productselector'>LTC</div>
@@ -13,7 +14,7 @@ module.exports = (content) => layout(html`
     <div class='chartoptions'>Opt 3</div>
     <div class='chartoptions'>Opt 4</div>
   </div>
-  <div id='perfchart'>Such a pretty graph chart thing!!!</div>
+  Such a pretty graph chart thing!!!</div>
 </div>
 <div id='performancedata'>
   <div id='totalsbox'>
