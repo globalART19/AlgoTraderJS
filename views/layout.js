@@ -5,6 +5,8 @@ module.exports = (content) => html`
     <html lang="en">
       <head>
         <title>AlgoTraderJS</title>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/chartist@0.11.0/dist/chartist.css">
+    <script src="//cdn.jsdelivr.net/npm/chartist@0.11.0/dist/chartist.js"></script>
         <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
           <link href="/stylesheets/style.css" rel="stylesheet">
       </head>

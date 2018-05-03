@@ -26,15 +26,15 @@ router.post('/', async (req, res, next) => {
 router.get('/chart', async (req, res, next) => {
   try {
     const histData = await db.models.historicaldata.findAll()
-    const chartLabels = histData.map(elem => {
+    const chartLabels = histData.slice(0, 5).map((elem) => {
       return elem.dataValues.histTime
     })
-    const chartSeries = histData.map(elem => {
+    const chartSeries = histData.slice(0, 5).map((elem) => {
       return elem.dataValues.close
     })
-    const chartData = { labels: chartLabels, series: chartSeries }
-    console.log(chartLabels, chartData)
-    res.send(chartData)
+    const chartData = { labels: chartLabels, series: [chartSeries] }
+    console.log(chartLabels, chartSeries)
+    res.send(historicalData(chartLabels, chartSeries))
   } catch (e) {
     next(e)
   }
