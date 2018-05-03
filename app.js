@@ -13,7 +13,7 @@ app.use('/', routes)
 const PORT = 1337
 
 async function init() {
-  await models.db.sync({ force: true })
+  await models.db.sync({ force: false })
   app.listen(1337, () => { console.log(`app listening on ${PORT}`) })
 }
 

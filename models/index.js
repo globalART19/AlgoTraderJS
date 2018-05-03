@@ -1,7 +1,9 @@
+const { promisify } = require('util');
 const Sequelize = require('sequelize')
 const db = new Sequelize('postgres:localhost:5432/algoTraderJS', { logging: false })
 const Gdax = require('gdax')
 const publicClient = new Gdax.PublicClient()
+
 
 async function dbAuthenticator() {
   await db.authenticate().then(() => { console.log('Connected to algoTraderJS database') })
@@ -102,8 +104,8 @@ UserTrade.beforeValidate((tradeObj) => {
 })
 
 const HistoricalData = db.define('historicaldata', {
-  time: {
-    type: Sequelize.DATE,
+  histTime: {
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   low: {
@@ -128,47 +130,62 @@ const HistoricalData = db.define('historicaldata', {
   }
 })
 
-HistoricalData.importHistory = async function (product, startDate, endDate, granualarity, forceUpdate = false) {
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const getHistoricalAPIData = async (product, startSetTime, endSetTime, granularity) => {
+  let startISOTime = new Date(startSetTime).toISOString().replace('Z', '000Z')
+  let endISOTime = new Date(endSetTime).toISOString().replace('Z', '000Z')
+  let dataArray = publicClient.getProductHistoricRates(
+    product,
+    {
+      start: startISOTime,
+      end: endISOTime,
+      granularity: granularity,
+    })
+  return dataArray
+}
+
+HistoricalData.importHistory = async function (product, startDate, endDate, granularity, forceUpdate = false) {
   const bulkUpdateArray = []
   try {
-    if (![60, 300, 900, 3600, 21600, 86400].includes(granualarity)) { throw 'Bad granularity' }
+    if (![60, 300, 900, 3600, 21600, 86400].includes(granularity)) { throw 'Bad granularity' }
     let startSetTime = startDate.getTime()
     let endSetTime = endDate.getTime()
-    if ((endDate.getTime() - startDate.getTime()) / granularity > 300) {
-      endSetTime = startSetTime + 299 * granualarity
+    const granMS = granularity * 1000
+    if ((endDate.getTime() - startDate.getTime()) / granMS > 300) {
+      endSetTime = startSetTime + 299 * granMS
     }
     let count = 0
     while (endSetTime <= endDate.getTime() || count === 0) {
-      let startISOTime = new Date(startSetTime).toISOString()
-      let endISOTime = new Date(endSetTime).toISOString()
-      let dataArray = await publicClient.getProductHistoricRates(
-        product,
-        {
-          start: startISOTime,
-          end: endISOTime,
-          granualarity: granualarity,
-        })
+      let dataArray = await getHistoricalAPIData(product, startSetTime, endSetTime, granularity)
+      await sleep(500)
       bulkUpdateArray.push([...dataArray])
-      startSetTime = endSetTime + granualarity
-      endSetTime += 300 * granualarity
+      startSetTime = endSetTime + granMS
+      endSetTime += 300 * granMS
       count++
+      console.log('count', count, 'startSetTime', startSetTime, 'endSetTime', endSetTime, 'endDate', endDate.getTime())
     }
   } catch (e) {
     console.error('Invalid importHistory (probably date format)', e)
   }
   try {
     console.log('Data push started')
-    return Promise.all(bulkUpdateArray.map(elem => {
+    const flatBulkUpdateArray = [].concat.apply([], bulkUpdateArray)
+    await Promise.all(flatBulkUpdateArray.map(elem => {
       let historicalDataInstance = {
-        time: elem[0],
+        histTime: elem[0],
         low: elem[1],
         high: elem[2],
         open: elem[3],
         close: elem[4],
         volume: elem[5]
       }
-      return HistoricalData.create(historicalDataInstance)
+      HistoricalData.create(historicalDataInstance)
     }))
+    await HistoricalData.findAll()
+    console.log('data push success')
   } catch (e) {
     console.error('Failed db push', e)
   }
