@@ -259,4 +259,4 @@ Order.beforeValidate((order) => {
   order.price = +order.price
 })
 
-module.exports = { db }
+module.exports = { db, User, UserTrade, HistoricalData, Order }
