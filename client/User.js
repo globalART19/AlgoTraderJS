@@ -6,13 +6,13 @@ const User = (props) => {
     <div id='performanceblock'>
       <div id='perfchart'>
         <div id='pcnavbar'>
-          <div class='productselector'>BTC</div>
-          <div class='productselector'>LTC</div>
-          <div class='productselector'>ETH</div>
-          <div class='chartoptions'>Opt 1</div>
-          <div class='chartoptions'>Opt 2</div>
-          <div class='chartoptions'>Opt 3</div>
-          <div class='chartoptions'>Opt 4</div>
+          <div className='productselector'>BTC</div>
+          <div className='productselector'>LTC</div>
+          <div className='productselector'>ETH</div>
+          <div className='chartoptions'>Opt 1</div>
+          <div className='chartoptions'>Opt 2</div>
+          <div className='chartoptions'>Opt 3</div>
+          <div className='chartoptions'>Opt 4</div>
         </div>
         Such a pretty graph chart thing!!!</div>
     </div>
@@ -28,13 +28,13 @@ const User = (props) => {
     </div>
     <div id='level2chart'>
       <div id='l2navbar'>
-        <div class='productselector'>BTC</div>
-        <div class='productselector'>LTC</div>
-        <div class='productselector'>ETH</div>
-        <div class='chartoptions'>Opt 1</div>
-        <div class='chartoptions'>Opt 2</div>
-        <div class='chartoptions'>Opt 3</div>
-        <div class='chartoptions'>Opt 4</div>
+        <div className='productselector'>BTC</div>
+        <div className='productselector'>LTC</div>
+        <div className='productselector'>ETH</div>
+        <div className='chartoptions'>Opt 1</div>
+        <div className='chartoptions'>Opt 2</div>
+        <div className='chartoptions'>Opt 3</div>
+        <div className='chartoptions'>Opt 4</div>
       </div>
       <div id='l2chart'>Another pretty graph chart thing!!!</div>
     </div>
@@ -45,14 +45,14 @@ const User = (props) => {
       $$$$$$$$$
   </div>
     <div id='news'>
-      <div class='productselector'>BTC</div>
-      <div class='productselector'>LTC</div>
-      <div class='productselector'>ETH</div>
+      <div className='productselector'>BTC</div>
+      <div className='productselector'>LTC</div>
+      <div className='productselector'>ETH</div>
       <h3>Market News</h3>
-      <div class='newsblurb'>Pretty lil news blurbs</div>
-      <div class='newsblurb'>Pretty lil news blurbs</div>
-      <div class='newsblurb'>Pretty lil news blurbs</div>
-      <div class='newsblurb'>Pretty lil news blurbs</div>
+      <div className='newsblurb'>Pretty lil news blurbs</div>
+      <div className='newsblurb'>Pretty lil news blurbs</div>
+      <div className='newsblurb'>Pretty lil news blurbs</div>
+      <div className='newsblurb'>Pretty lil news blurbs</div>
     </div>
   </div>)
 }

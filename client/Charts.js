@@ -2,7 +2,6 @@ import React from 'react'
 import { Chart } from 'react-google-charts'
 
 const Charts = (props) => {
-  console.log('charts', props.chartData)
   return (
     <div className="google-chart">
       <Chart

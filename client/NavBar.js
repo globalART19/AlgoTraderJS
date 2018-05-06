@@ -17,7 +17,7 @@ const NavBar = (props) => {
           <ul className="nav navbar-nav">
             {props.views.map(view => {
               return (<li key={view.name}>
-                <a onClick={() => props.changeView(view.name)} > {view.navName}</a>
+                <a onClick={() => props.changeView(view.name)} > {view.navLabel}</a>
               </li>)
             }
             )}
