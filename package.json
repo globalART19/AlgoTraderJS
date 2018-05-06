@@ -16,11 +16,13 @@
     "express": "^4.16.2",
     "font-awesome": "^4.7.0",
     "gdax": "^0.7.0",
+    "moment": "^2.22.1",
     "morgan": "^1.9.0",
     "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-google-charts": "^1.5.7",
     "sequelize": "^4.31.2"
   },
   "devDependencies": {

@@ -3,7 +3,8 @@ import HistoricalData from './HistoricalData'
 import User from './User'
 import HomePage from './HomePage'
 import NavBar from './NavBar'
-// import axios from 'axios'
+import axios from 'axios'
+import moment from 'moment'
 
 export default class Main extends React.Component {
   constructor() {
@@ -25,11 +26,18 @@ export default class Main extends React.Component {
         }
       ],
       currentView: 'HomePage',
+      chartData: {}
     }
     this.changeView = this.changeView.bind(this)
+    this.getHistoryChart = this.getHistoryChart.bind(this)
   }
   changeView(view) {
     this.setState({ currentView: view })
+  }
+  async getHistoryChart() {
+    const res = await axios.get('/api/historicaldata/chart')
+    let chartData = JSON.parse(res.data)
+    await this.setState({ chartData: chartData })
   }
   render() {
     return (
@@ -42,7 +50,7 @@ export default class Main extends React.Component {
             case 'User':
               return <User />
             case 'HistoricalData':
-              return <HistoricalData />
+              return <HistoricalData chartData={this.state.chartData} getHistoryChart={this.getHistoryChart} />
             default:
               return <HomePage />
           }
