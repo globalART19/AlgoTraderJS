@@ -1,5 +1,8 @@
 const router = require('express').Router()
 const { db } = require('../db')
+const Gdax = require('gdax')
+const orderbookSync = new Gdax.OrderbookSync(['BTC-USD'])
+const { BigNumber } = require('bignumber.js')
 
 router.get('/', (req, res, next) => {
   try {
@@ -19,13 +22,24 @@ router.post('/', (req, res, next) => {
 
 router.get('/chart', async (req, res, next) => {
   try {
-    const histData = await db.models.historicaldata.findAll()
-    const chartData = histData.map((elem) => {
-      // let histTime = new Date(0)
-      // histTime.setUTCMilliseconds(elem.dataValues.histTime)
-      return [elem.dataValues.histTime, elem.dataValues.close]
+    let curState = orderbookSync.books['BTC-USD'].state()
+    let chartData = [['Price ($)', 'Asks (qty)', 'Bids (qty)']]
+    let curPrice = curState.asks[0].price.toNumber()
+    let prevAskSize = 0
+    curState.asks.map(ask => {
+      if (ask.price.toNumber() < curPrice + 1500) {
+        chartData.push([ask.price.toNumber(), ask.size.toNumber() + prevAskSize, null])
+        prevAskSize += ask.size.toNumber()
+      }
     })
-    chartData.unshift(['Time (1 hr intervals)', 'Price($)'])
+    let prevBidSize = 0
+    curState.bids.map(bid => {
+      if (bid.price.toNumber() > curPrice - 1500) {
+        chartData.push([bid.price.toNumber(), null, bid.size.toNumber() + prevBidSize])
+        prevBidSize += bid.size.toNumber()
+      }
+    })
+    console.log(chartData)
     res.json(JSON.stringify(chartData))
   } catch (e) {
     next(e)

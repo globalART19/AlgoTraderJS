@@ -2,28 +2,89 @@ import React from 'react'
 import { Chart } from 'react-google-charts'
 
 const Charts = (props) => {
+  const options = ((chartName) => {
+    switch (chartName) {
+      case 'HistoricalData':
+        return {
+          title: chartName,
+          hAxis: {
+            title: 'Time (1hr intervals for past year)',
+            // format: 'MMM d, y'
+          },
+          vAxis: { title: 'Price ($)' },
+          legend: 'none',
+          pointSize: 1,
+          explorer: {
+            actions: ['dragToZoom', 'rightClickToReset', 'dragToPan'],
+            keepInBounds: true,
+            zoomDelta: .25
+          }
+        }
+      // case 'User':
+      //   return {
+      //     title: chartName,
+      //     hAxis: {
+      //       title: 'Time (1hr intervals for past year)',
+      //     },
+      //     vAxis: { title: 'Price ($)' },
+      //     pointSize: 1,
+      //     explorer: {
+      //       actions: ['dragToZoom', 'rightClickToReset', 'dragToPan'],
+      //       keepInBounds: true,
+      //       zoomDelta: .25
+      //     }
+      //   }
+      case 'OrderBook':
+        return {
+          title: chartName,
+          hAxis: {
+            title: 'Price ($)',
+          },
+          vAxis: { title: 'Volume (open orders)' },
+          pointSize: 1,
+          explorer: {
+            actions: ['dragToZoom', 'rightClickToReset', 'dragToPan'],
+            keepInBounds: true,
+            zoomDelta: .25
+          }
+        }
+      // case 'Algorithm':
+      //   return {
+      //     title: chartName,
+      //     hAxis: {
+      //       title: 'Time (1hr intervals for past year)',
+      //     },
+      //     vAxis: { title: 'Price ($)' },
+      //     pointSize: 1,
+      //     explorer: {
+      //       actions: ['dragToZoom', 'rightClickToReset', 'dragToPan'],
+      //       keepInBounds: true,
+      //       zoomDelta: .25
+      //     }
+      //   }
+      default:
+        return {
+          title: chartName,
+          hAxis: {
+            title: 'Default',
+          },
+          vAxis: { title: 'Default' },
+          pointSize: 1,
+          explorer: {
+            actions: ['dragToZoom', 'rightClickToReset', 'dragToPan'],
+            keepInBounds: true,
+            zoomDelta: .25
+          }
+        }
+    }
+  })(props.chartName)
+
   return (
     <div className="google-chart">
       <Chart
         chartType="ScatterChart"
         data={props.chartData}
-        options={
-          {
-            title: 'BTC-USD Historical Data',
-            hAxis: {
-              title: 'Time (1hr intervals for past year)',
-              // format: 'MMM d, y'
-            },
-            vAxis: { title: 'Price ($)' },
-            // legend: 'none'
-            pointSize: 1,
-            explorer: {
-              actions: ['dragToZoom', 'rightClickToReset', 'dragToPan'],
-              keepInBounds: true,
-              zoomDelta: .25
-            }
-          }
-        }
+        options={options}
         graph_id="HistoricalDataChart"
         width="100%"
         height="600px"
@@ -33,6 +94,3 @@ const Charts = (props) => {
 }
 
 export default Charts
-
-// Display all current state charts and graphs here. Maybe make this a live update dashboard?
-// Links to all available static charts and graphs with indicators and interactivity
