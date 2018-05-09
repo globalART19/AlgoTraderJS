@@ -1,4 +1,6 @@
 import React from 'react'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import User from './User'
 
 const NavBar = (props) => {
   return (
@@ -17,7 +19,7 @@ const NavBar = (props) => {
           <ul className="nav navbar-nav">
             {props.views.map(view => {
               return (<li key={view.name}>
-                <a onClick={() => props.changeView(view.name)} > {view.navLabel}</a>
+                <Link to={`/${view.name}`}>{view.navLabel}</Link>
               </li>)
             }
             )}

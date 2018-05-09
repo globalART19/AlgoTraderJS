@@ -13,7 +13,7 @@ const Charts = (props) => {
           },
           vAxis: { title: 'Price ($)' },
           legend: 'none',
-          pointSize: 1,
+          // pointSize: 1,
           explorer: {
             actions: ['dragToZoom', 'rightClickToReset', 'dragToPan'],
             keepInBounds: true,
@@ -41,7 +41,7 @@ const Charts = (props) => {
             title: 'Price ($)',
           },
           vAxis: { title: 'Volume (open orders)' },
-          pointSize: 1,
+          // pointSize: 1,
           explorer: {
             actions: ['dragToZoom', 'rightClickToReset', 'dragToPan'],
             keepInBounds: true,
@@ -69,7 +69,7 @@ const Charts = (props) => {
             title: 'Default',
           },
           vAxis: { title: 'Default' },
-          pointSize: 1,
+          // pointSize: 1,
           explorer: {
             actions: ['dragToZoom', 'rightClickToReset', 'dragToPan'],
             keepInBounds: true,
@@ -82,10 +82,10 @@ const Charts = (props) => {
   return (
     <div className="google-chart">
       <Chart
-        chartType="ScatterChart"
+        chartType="LineChart"
         data={props.chartData}
         options={options}
-        graph_id="HistoricalDataChart"
+        graph_id={props.chartName}
         width="100%"
         height="600px"
       />

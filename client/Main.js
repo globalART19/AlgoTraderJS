@@ -1,4 +1,5 @@
 import React from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import HistoricalData from './HistoricalData'
 import User from './User'
 import HomePage from './HomePage'
@@ -26,15 +27,10 @@ export default class Main extends React.Component {
           navLabel: 'Historical Testing'
         }
       ],
-      currentView: 'HomePage',
       chartName: '',
       chartData: {}
     }
-    this.changeView = this.changeView.bind(this)
     this.getChart = this.getChart.bind(this)
-  }
-  changeView(view) {
-    this.setState({ currentView: view })
   }
   async getChart(chartName) {
     const res = await axios.get(`/api/${chartName}/chart`)
@@ -43,23 +39,18 @@ export default class Main extends React.Component {
   }
   render() {
     return (
-      <div id='main' className='row container'>
-        <NavBar views={this.state.views} changeView={this.changeView} />
-        {(() => {
-          switch (this.state.currentView) {
-            case 'HomePage':
-              return <HomePage />
-            case 'User':
-              return <User />
-            case 'OrderBook':
-              return <OrderBook chartData={this.state.chartData} chartName={this.state.chartName} getChart={this.getChart} />
-            case 'HistoricalData':
-              return <HistoricalData chartData={this.state.chartData} chartName={this.state.chartName} getChart={this.getChart} />
-            default:
-              return <HomePage />
-          }
-        })()}
-      </div>
+      <Router>
+        <div id='main' className='row container'>
+          <NavBar views={this.state.views} />
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/User" component={User} />
+            <Route path='/OrderBook' render={() => <OrderBook chartData={this.state.chartData} chartName={this.state.chartName} getChart={this.getChart} />} />
+            <Route path='/HistoricalData' render={() => <HistoricalData chartData={this.state.chartData} chartName={this.state.chartName} getChart={this.getChart} />} />
+            <Route component={HomePage} />
+          </Switch>
+        </div>
+      </Router>
     )
   }
 }

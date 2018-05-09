@@ -71,8 +71,8 @@ HistoricalData.importHistory = async function (product, startDate, endDate, gran
   try {
     console.log('Data push started')
     const flatBulkUpdateArray = [].concat.apply([], bulkUpdateArray)
-    await Promise.all(flatBulkUpdateArray.map(elem => {
-      let historicalDataInstance = {
+    const objectifiedArray = flatBulkUpdateArray.map(elem => {
+      return {
         histTime: elem[0],
         low: elem[1],
         high: elem[2],
@@ -80,9 +80,8 @@ HistoricalData.importHistory = async function (product, startDate, endDate, gran
         close: elem[4],
         volume: elem[5]
       }
-      HistoricalData.create(historicalDataInstance)
-    }))
-    await HistoricalData.findAll()
+    })
+    await HistoricalData.bulkCreate(objectifiedArray)
     console.log('data push success')
   } catch (e) {
     console.error('Failed db push', e)

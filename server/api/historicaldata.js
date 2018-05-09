@@ -23,7 +23,7 @@ router.post('/', async (req, res, next) => {
 
 router.get('/chart', async (req, res, next) => {
   try {
-    const histData = await db.models.historicaldata.findAll()
+    const histData = await db.models.historicaldata.findAll({ order: [['histTime', 'ASC']] })
     const chartData = histData.map((elem) => {
       // let histTime = new Date(0)
       // histTime.setUTCMilliseconds(elem.dataValues.histTime)

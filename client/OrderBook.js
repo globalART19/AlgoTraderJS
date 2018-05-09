@@ -4,13 +4,19 @@ import FakeChart from './FakeChart'
 
 
 const OrderBook = (props) => {
-  if (props.chartName !== 'OrderBook') { props.getChart('OrderBook') }
+  if (props.chartName !== 'OrderBook') {
+    props.getChart('OrderBook')
+    setInterval(() => {
+      props.getChart('OrderBook')
+    }, 1000)
+  }
   return (
     <div>
-      <button type='submit' onClick={() => { props.importOrderBook() }} >Import Order Book</button>
       {(props.chartName !== 'OrderBook') ? <FakeChart /> : <Charts chartData={props.chartData} chartName={props.chartName} />}
     </div>
   )
 }
 
 export default OrderBook
+
+  // < button type = 'submit' onClick = {() => { props.importOrderBook() }} > Import Order Book</button >

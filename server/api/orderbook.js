@@ -20,7 +20,7 @@ router.post('/', (req, res, next) => {
   }
 })
 
-router.get('/chart', async (req, res, next) => {
+router.get('/chart', (req, res, next) => {
   try {
     let curState = orderbookSync.books['BTC-USD'].state()
     let chartData = [['Price ($)', 'Asks (qty)', 'Bids (qty)']]
