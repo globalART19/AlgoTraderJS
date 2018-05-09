@@ -39,7 +39,6 @@ router.get('/chart', (req, res, next) => {
         prevBidSize += bid.size.toNumber()
       }
     })
-    console.log(chartData)
     res.json(JSON.stringify(chartData))
   } catch (e) {
     next(e)
