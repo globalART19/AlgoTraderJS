@@ -27,9 +27,9 @@ router.get('/chart', async (req, res, next) => {
     const chartData = histData.map((elem) => {
       // let histTime = new Date(0)
       // histTime.setUTCMilliseconds(elem.dataValues.histTime)
-      return [elem.dataValues.histTime, elem.dataValues.close]
+      return [elem.dataValues.histTime, elem.dataValues.close, elem.dataValues.m12ema, elem.dataValues.m26ema, elem.dataValues.mave, elem.dataValues.msig, elem.dataValues.rsi]
     })
-    chartData.unshift(['Time (1 hr intervals)', 'Price($)'])
+    chartData.unshift(['Time (1 hr intervals)', 'Price($)', 'm12ema', 'm26ema', 'mave', 'msig', 'rsi'])
     res.json(JSON.stringify(chartData))
   } catch (e) {
     next(e)

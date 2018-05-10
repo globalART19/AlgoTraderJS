@@ -12,7 +12,7 @@ const Charts = (props) => {
             // format: 'MMM d, y'
           },
           vAxis: { title: 'Price ($)' },
-          legend: 'none',
+          // legend: 'none',
           // pointSize: 1,
           explorer: {
             actions: ['dragToZoom', 'rightClickToReset', 'dragToPan'],

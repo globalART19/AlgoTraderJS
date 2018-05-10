@@ -27,7 +27,6 @@ const calculateIndicators = function (histData) {
       rsi = indicators.rsi(histDataArray, i, dataPointsPerPeriod)
     }
     item.push(m12ema, m26ema, mave, msig, rsi)
-    console.log(item)
   })
   console.log('Calculations complete')
 }
