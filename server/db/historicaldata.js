@@ -2,6 +2,7 @@ const db = require('./db')
 const Sequelize = require('sequelize')
 const { promisify } = require('util')
 const { sleep } = require('./helperfunctions')
+const calculateIndicators = require('../datamanipulation/historicaldatacalc')
 const Gdax = require('gdax')
 const publicClient = new Gdax.PublicClient()
 
@@ -29,7 +30,12 @@ const HistoricalData = db.define('historicaldata', {
   volume: {
     type: Sequelize.INTEGER,
     allowNull: false
-  }
+  },
+  m12ema: Sequelize.INTEGER,
+  m26ema: Sequelize.INTEGER,
+  mave: Sequelize.INTEGER,
+  msig: Sequelize.INTEGER,
+  rsi: Sequelize.INTEGER
 })
 
 const getHistoricalAPIData = async (product, startSetTime, endSetTime, granularity) => {
@@ -48,7 +54,7 @@ const getHistoricalAPIData = async (product, startSetTime, endSetTime, granulari
 HistoricalData.importHistory = async function (product, startDate, endDate, granularity, forceUpdate = false) {
   const bulkUpdateArray = []
   try {
-    if (![60, 300, 900, 3600, 21600, 86400].includes(granularity)) { throw 'Bad granularity' }
+    if (![60, 300, 900, 3600, 21600, 86400].includes(granularity)) { throw new Error('Bad granularity') }
     let startSetTime = startDate.getTime()
     let endSetTime = endDate.getTime()
     const granMS = granularity * 1000
@@ -71,6 +77,7 @@ HistoricalData.importHistory = async function (product, startDate, endDate, gran
   try {
     console.log('Data push started')
     const flatBulkUpdateArray = [].concat.apply([], bulkUpdateArray)
+    calculateIndicators(flatBulkUpdateArray)
     const objectifiedArray = flatBulkUpdateArray.map(elem => {
       return {
         histTime: elem[0],
@@ -78,7 +85,12 @@ HistoricalData.importHistory = async function (product, startDate, endDate, gran
         high: elem[2],
         open: elem[3],
         close: elem[4],
-        volume: elem[5]
+        volume: elem[5],
+        m12ema: elem[7],
+        m26ema: elem[8],
+        mave: elem[9],
+        msig: elem[10],
+        rsi: elem[11]
       }
     })
     await HistoricalData.bulkCreate(objectifiedArray)

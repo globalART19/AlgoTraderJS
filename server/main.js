@@ -2,7 +2,7 @@ const PORT = 1337
 const server = require('./index')
 const { db } = require('./db')
 
-db.sync({ force: false })
+db.sync({ force: true })
   .then(() => {
     server.listen(PORT, () => console.log(`
 

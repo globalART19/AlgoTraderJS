@@ -3,20 +3,30 @@ import Charts from './Charts'
 import FakeChart from './FakeChart'
 
 
-const OrderBook = (props) => {
-  if (props.chartName !== 'OrderBook') {
-    props.getChart('OrderBook')
-    setInterval(() => {
-      props.getChart('OrderBook')
-    }, 1000)
+class OrderBook extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      intervalId: ''
+    }
   }
-  return (
-    <div>
-      {(props.chartName !== 'OrderBook') ? <FakeChart /> : <Charts chartData={props.chartData} chartName={props.chartName} />}
-    </div>
-  )
+  componentDidMount() {
+    this.props.getChart('OrderBook')
+    const chartRefresh = setInterval(() => {
+      this.props.getChart('OrderBook')
+    }, 1000)
+    this.setState({ intervalId: chartRefresh })
+  }
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId)
+  }
+  render() {
+    return (
+      <div>
+        {(this.props.chartName !== 'OrderBook') ? <FakeChart /> : <Charts chartData={this.props.chartData} chartName={this.props.chartName} />}
+      </div >
+    )
+  }
 }
 
 export default OrderBook
-
-  // < button type = 'submit' onClick = {() => { props.importOrderBook() }} > Import Order Book</button >
