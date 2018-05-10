@@ -2,11 +2,12 @@
 
 const m12ema = function (histData, index, period) {
   let firstSum = 0
-  for (let i = index; i > index - period; i--) {
+  const startPoint = index - 12 * period
+  for (let i = startPoint; i < startPoint + period; i++) {
     firstSum += histData[i][4]
   }
   let curSum = 0
-  for (let i = index - period; i > index - 12 * period; i--) {
+  for (let i = startPoint + period; i < index; i++) {
     curSum += histData[i][4]
   }
   const m12emaCalc = firstSum * 2 / (13 * period) + curSum / (13 * period)
@@ -15,11 +16,12 @@ const m12ema = function (histData, index, period) {
 
 const m26ema = function (histData, index, period) {
   let firstSum = 0
-  for (let i = index; i > index - period; i--) {
+  const startPoint = index - 26 * period
+  for (let i = startPoint; i < startPoint + period; i++) {
     firstSum += histData[i][4]
   }
   let curSum = 0
-  for (let i = index - period; i > index - 26 * period; i--) {
+  for (let i = startPoint + period; i < index; i++) {
     curSum += histData[i][4]
   }
   const m26emaCalc = firstSum * 2 / (27 * period) + curSum / (27 * period)
@@ -30,10 +32,11 @@ const msig = function (histData, index, curMave, period) {
   let msigcalc = 0
   let firstSum = curMave
   let curSum = 0
-  for (let i = index - 1; i > index - period; i--) {
+  const startPoint = index - 44 * period
+  for (let i = startPoint; i < startPoint + period; i++) {
     firstSum += histData[i][8]
   }
-  for (let i = index - period; i > index - period * 8; i--) {
+  for (let i = startPoint + period; i < startPoint + 9 * period; i++) {
     curSum += histData[i][8]
   }
   msigcalc = (firstSum * 2 / (10 * period)) + (curSum * 8 / (10 * period))
@@ -42,8 +45,9 @@ const msig = function (histData, index, curMave, period) {
 
 const rsi = function (histData, index, period) {
   let gain = 0, numGain = 0, loss = 0, numLoss = 0, curPrice = 0, lastPrice = 0, deltaValue = 0
-  curPrice = histData[index][4]
-  for (let i = index - 1; i > index - 15 * period; i--) {
+  const startPoint = index - 15 * period
+  curPrice = histData[startPoint][4]
+  for (let i = startPoint + 1; i < index; i++) {
     lastPrice = curPrice
     curPrice = histData[i][4]
     deltaValue = curPrice - lastPrice
