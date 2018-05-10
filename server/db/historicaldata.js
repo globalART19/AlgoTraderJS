@@ -86,11 +86,11 @@ HistoricalData.importHistory = async function (product, startDate, endDate, gran
         open: elem[3],
         close: elem[4],
         volume: elem[5],
-        m12ema: elem[7],
-        m26ema: elem[8],
-        mave: elem[9],
-        msig: elem[10],
-        rsi: elem[11]
+        m12ema: elem[6],
+        m26ema: elem[7],
+        mave: elem[8],
+        msig: elem[9],
+        rsi: elem[10]
       }
     })
     await HistoricalData.bulkCreate(objectifiedArray)
