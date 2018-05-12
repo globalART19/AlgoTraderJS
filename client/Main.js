@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import HistoricalData from './HistoricalData'
 import User from './User'
 import HomePage from './HomePage'
@@ -28,7 +28,7 @@ export default class Main extends React.Component {
         }
       ],
       chartName: '',
-      chartData: {}
+      chartData: []
     }
     this.getChart = this.getChart.bind(this)
   }
@@ -39,18 +39,16 @@ export default class Main extends React.Component {
   }
   render() {
     return (
-      <Router>
-        <div id='main' className='row container'>
-          <NavBar views={this.state.views} />
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route path="/User" component={User} />
-            <Route path='/OrderBook' render={() => <OrderBook chartData={this.state.chartData} chartName={this.state.chartName} getChart={this.getChart} />} />
-            <Route path='/HistoricalData' render={() => <HistoricalData chartData={this.state.chartData} chartName={this.state.chartName} getChart={this.getChart} />} />
-            <Route component={HomePage} />
-          </Switch>
-        </div>
-      </Router>
+      <div id='main' className='row container'>
+        <NavBar views={this.state.views} />
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/User" component={User} />
+          <Route path='/OrderBook' render={() => <OrderBook chartData={this.state.chartData} chartName={this.state.chartName} getChart={this.getChart} />} />
+          <Route path='/HistoricalData' render={() => <HistoricalData chartData={this.state.chartData} chartName={this.state.chartName} getChart={this.getChart} />} />
+          <Route component={HomePage} />
+        </Switch>
+      </div>
     )
   }
 }
