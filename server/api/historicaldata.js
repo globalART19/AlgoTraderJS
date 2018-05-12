@@ -3,7 +3,7 @@ const { db } = require('../db/')
 
 router.get('/', async (req, res, next) => {
   try {
-    const historicalData = await HistoricalData.findAll()
+    const historicalData = await db.models.historicaldata.findAll()
     res.json(historicalData)
   } catch (e) {
     next(e)
@@ -14,8 +14,17 @@ router.post('/', async (req, res, next) => {
   try {
     const sDate = new Date(2017, 4, 1, 0, 0, 0)
     const eDate = new Date(2018, 4, 2, 0, 0, 0)
-    db.models.historicaldata.importHistory('BTC-USD', sDate, eDate, req.body.period)
-    res.status(201).send('Need to find a delayed redirect path')
+    await db.models.historicaldata.importHistory('BTC-USD', sDate, eDate, req.body.period)
+    res.sendStatus(201)
+  } catch (e) {
+    next(e)
+  }
+})
+
+router.post('/updateindicators', async (req, res, next) => {
+  try {
+    await db.models.historicaldata.updateIndicators(req.body.period)
+    res.sendStatus(201)
   } catch (e) {
     next(e)
   }

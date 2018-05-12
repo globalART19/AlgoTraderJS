@@ -51,6 +51,14 @@ const getHistoricalAPIData = async (product, startSetTime, endSetTime, granulari
   return dataArray
 }
 
+HistoricalData.updateIndicators = async function (period) {
+  const dataArray = HistoricalData.findAll()
+  const histDataArray = Object.keys(item).map(function (key) {
+    return item[key];
+  });
+  calculateIndicators(histDataArray, period)
+}
+
 HistoricalData.importHistory = async function (product, startDate, endDate, granularity, forceUpdate = false) {
   const bulkUpdateArray = []
   try {
@@ -77,7 +85,7 @@ HistoricalData.importHistory = async function (product, startDate, endDate, gran
   try {
     console.log('Data push started')
     const flatBulkUpdateArray = [].concat.apply([], bulkUpdateArray)
-    calculateIndicators(flatBulkUpdateArray)
+    calculateIndicators(flatBulkUpdateArray, granularity)
     const objectifiedArray = flatBulkUpdateArray.map(elem => {
       return {
         histTime: elem[0],
@@ -93,6 +101,23 @@ HistoricalData.importHistory = async function (product, startDate, endDate, gran
         rsi: elem[10]
       }
     })
+    // const flatBulkUpdateArray = [].concat.apply([], bulkUpdateArray)
+    // const objectifiedArray = flatBulkUpdateArray.map(elem => {
+    //   return {
+    //     histTime: elem[0],
+    //     low: elem[1],
+    //     high: elem[2],
+    //     open: elem[3],
+    //     close: elem[4],
+    //     volume: elem[5],
+    //     m12ema: null,
+    //     m26ema: null,
+    //     mave: null,
+    //     msig: null,
+    //     rsi: null
+    //   }
+    // })
+    // calculateIndicators(objectifiedArray)
     await HistoricalData.bulkCreate(objectifiedArray)
     console.log('data push success')
   } catch (e) {
