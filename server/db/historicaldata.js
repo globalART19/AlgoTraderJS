@@ -51,15 +51,45 @@ const getHistoricalAPIData = async (product, startSetTime, endSetTime, granulari
   return dataArray
 }
 
-HistoricalData.updateIndicators = async function (period) {
-  const dataArray = HistoricalData.findAll()
-  const histDataArray = Object.keys(item).map(function (key) {
-    return item[key];
-  });
-  calculateIndicators(histDataArray, period)
+HistoricalData.updateIndicators = async function (period, granularity) {
+  try {
+    const dataArray = await HistoricalData.findAll()
+    const histDataArray = dataArray.map((instance) => {
+      return [instance.dataValues.htime, instance.dataValues.low, instance.dataValues.high, instance.dataValues.open, instance.dataValues.close, instance.dataValues.volume]
+      // const instanceArray = Object.keys(instance.dataValues).map((key) => {
+      //   return instance.dataValues[key]
+      // })
+      // instanceArray.shift()
+      // instanceArray.pop()
+      // instanceArray.pop()
+      // return instanceArray
+    })
+    const calculatedArray = calculateIndicators(histDataArray, period, granularity)
+    console.log(calculatedArray)
+    const objectifiedArray = calculatedArray.map(elem => {
+      return {
+        histTime: elem[0],
+        low: elem[1],
+        high: elem[2],
+        open: elem[3],
+        close: elem[4],
+        volume: elem[5],
+        m12ema: elem[6],
+        m26ema: elem[7],
+        mave: elem[8],
+        msig: elem[9],
+        rsi: elem[10]
+      }
+    })
+    // await HistoricalData.bulkCreate(objectifiedArray)
+    console.log('calculate indicators success')
+    return objectifiedArray
+  } catch (e) {
+    console.error('Failed db updateIndicators', e)
+  }
 }
 
-HistoricalData.importHistory = async function (product, startDate, endDate, granularity, forceUpdate = false) {
+HistoricalData.importHistory = async function (product, startDate, endDate, granularity, period, forceUpdate = false) {
   const bulkUpdateArray = []
   try {
     if (![60, 300, 900, 3600, 21600, 86400].includes(granularity)) { throw new Error('Bad granularity') }
@@ -85,7 +115,7 @@ HistoricalData.importHistory = async function (product, startDate, endDate, gran
   try {
     console.log('Data push started')
     const flatBulkUpdateArray = [].concat.apply([], bulkUpdateArray)
-    calculateIndicators(flatBulkUpdateArray, granularity)
+    // const calculatedArray = calculateIndicators(flatBulkUpdateArray, granularity, period)
     const objectifiedArray = flatBulkUpdateArray.map(elem => {
       return {
         histTime: elem[0],
@@ -94,30 +124,13 @@ HistoricalData.importHistory = async function (product, startDate, endDate, gran
         open: elem[3],
         close: elem[4],
         volume: elem[5],
-        m12ema: elem[6],
-        m26ema: elem[7],
-        mave: elem[8],
-        msig: elem[9],
-        rsi: elem[10]
+        //     m12ema: elem[6],
+        //     m26ema: elem[7],
+        //     mave: elem[8],
+        //     msig: elem[9],
+        //     rsi: elem[10]
       }
     })
-    // const flatBulkUpdateArray = [].concat.apply([], bulkUpdateArray)
-    // const objectifiedArray = flatBulkUpdateArray.map(elem => {
-    //   return {
-    //     histTime: elem[0],
-    //     low: elem[1],
-    //     high: elem[2],
-    //     open: elem[3],
-    //     close: elem[4],
-    //     volume: elem[5],
-    //     m12ema: null,
-    //     m26ema: null,
-    //     mave: null,
-    //     msig: null,
-    //     rsi: null
-    //   }
-    // })
-    // calculateIndicators(objectifiedArray)
     await HistoricalData.bulkCreate(objectifiedArray)
     console.log('data push success')
   } catch (e) {

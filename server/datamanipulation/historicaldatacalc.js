@@ -1,8 +1,9 @@
 const indicators = require('./indicatorcalcs')
 
-const calculateIndicators = function (histData, period) {
-  const setPeriod = 1; //in days
-  const dataPointsPerPeriod = Math.floor(setPeriod * 86400 / period)
+const calculateIndicators = function (histData, granularity, period) {
+  console.log('in calculateIndicators', granularity, period)
+  const dataPointsPerPeriod = Math.floor(period / granularity)
+  console.log('DPPP', dataPointsPerPeriod)
   const sortedHistData = histData.sort((a, b) => a[0] - b[0])
   sortedHistData.forEach((item, i, histDataArray) => {
     let m12ema = null

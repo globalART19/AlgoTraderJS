@@ -1,9 +1,10 @@
 const router = require('express').Router()
-const { db } = require('../db/')
+const { db, HistoricalData } = require('../db/')
 
 router.get('/', async (req, res, next) => {
   try {
-    const historicalData = await db.models.historicaldata.findAll()
+    console.log('Get Data API')
+    const historicalData = await HistoricalData.findAll()
     res.json(historicalData)
   } catch (e) {
     next(e)
@@ -12,9 +13,10 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
+    console.log('Import Data API')
     const sDate = new Date(2017, 4, 1, 0, 0, 0)
     const eDate = new Date(2018, 4, 2, 0, 0, 0)
-    await db.models.historicaldata.importHistory('BTC-USD', sDate, eDate, req.body.period)
+    await HistoricalData.importHistory('BTC-USD', sDate, eDate, req.body.period)
     res.sendStatus(201)
   } catch (e) {
     next(e)
@@ -23,7 +25,8 @@ router.post('/', async (req, res, next) => {
 
 router.post('/updateindicators', async (req, res, next) => {
   try {
-    await db.models.historicaldata.updateIndicators(req.body.period)
+    console.log('req.body update', req.body.period, req.body.granularity)
+    await HistoricalData.updateIndicators(req.body.period, req.body.granularity)
     res.sendStatus(201)
   } catch (e) {
     next(e)
@@ -32,10 +35,11 @@ router.post('/updateindicators', async (req, res, next) => {
 
 router.get('/chart', async (req, res, next) => {
   try {
-    const histData = await db.models.historicaldata.findAll({ order: [['histTime', 'ASC']] })
+    const histData = await HistoricalData.findAll({ order: [['histTime', 'ASC']] })
     const chartData = histData.map((elem) => {
       // let histTime = new Date(0)
       // histTime.setUTCMilliseconds(elem.dataValues.histTime)
+
       return [elem.dataValues.histTime, elem.dataValues.close, elem.dataValues.m12ema, elem.dataValues.m26ema, elem.dataValues.mave, elem.dataValues.msig, elem.dataValues.rsi]
     })
     chartData.unshift(['Time (1 hr intervals)', 'Price($)', 'm12ema', 'm26ema', 'mave', 'msig', 'rsi'])

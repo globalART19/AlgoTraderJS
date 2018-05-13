@@ -1,11 +1,11 @@
 const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
-const morgan = require('morgan')
+const volleyball = require('volleyball')
 const app = express()
 module.exports = app
 
-app.use(morgan())
+app.use(volleyball)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
