@@ -32,8 +32,8 @@ export default class Main extends React.Component {
     }
     this.getChart = this.getChart.bind(this)
   }
-  async getChart(chartName) {
-    const res = await axios.get(`/api/${chartName}/chart`)
+  async getChart(chartName, options) {
+    const res = await axios.post(`/api/${chartName}/chart`, options)
     const chartData = JSON.parse(res.data)
     this.setState({ chartData, chartName })
   }

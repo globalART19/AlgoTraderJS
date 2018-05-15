@@ -21,16 +21,19 @@ class HistoricalData extends React.Component {
     this.setState(this.state)
     console.log('historical data pull complete')
   }
-  handleChange(event) {
-    this.setState({
+  async handleChange(event) {
+    await this.setState({
       [event.target.name]: event.target.value * 3600
     })
+    console.log(this.state.period)
   }
-  async handleSubmit(event) {
+  handleSubmit(event) {
     event.preventDefault()
+    console.log('in handleSubmit')
     console.log('handleSubmit', this.state.period)
-    await axios.post('/api/historicaldata/updateindicators', { 'period': this.state.period, 'granularity': this.state.granularity })
-    await this.setState(this.state)
+    // await axios.post('/api/historicaldata/updateindicators', { 'period': this.state.period, 'granularity': this.state.granularity })
+    this.props.getChart('HistoricalData', { 'period': this.state.period, 'granularity': this.state.granularity })
+    this.setState(this.state)
     console.log('indicator period update complete')
   }
   render() {
@@ -38,7 +41,7 @@ class HistoricalData extends React.Component {
     return (
       <div id='historicalData'>
         <Charts chartData={this.props.chartData} chartName={this.props.chartName} />
-        <FormUpdateIndicators handlePullData={this.handlePullData} handleSubmit={this.handleSubmit} />
+        <FormUpdateIndicators handlePullData={this.handlePullData} handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
       </div >
     )
   }
