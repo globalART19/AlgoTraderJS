@@ -21,27 +21,39 @@ class HistoricalData extends React.Component {
     this.setState(this.state)
     console.log('historical data pull complete')
   }
-  async handleChange(event) {
-    await this.setState({
-      [event.target.name]: event.target.value * 3600
-    })
-    console.log(this.state.period)
+  handleChange(event) {
+    // this.setState({
+    //   [event.target.name]: event.target.value * 3600
+    // })
   }
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault()
-    console.log('in handleSubmit')
-    console.log('handleSubmit', this.state.period)
-    // await axios.post('/api/historicaldata/updateindicators', { 'period': this.state.period, 'granularity': this.state.granularity })
-    this.props.getChart('HistoricalData', { 'period': this.state.period, 'granularity': this.state.granularity })
-    this.setState(this.state)
-    console.log('indicator period update complete')
+    await this.setState({
+      period: event.target.period.value * 3600
+    })
+    await this.props.getChart('HistoricalData', { 'period': this.state.period, 'granularity': this.state.granularity })
+  }
+  async componentDidMount() {
+    if (this.props.chartName !== 'HistoricalData') { await this.props.getChart('HistoricalData') }
   }
   render() {
-    if (this.props.chartName !== 'HistoricalData') { this.props.getChart('HistoricalData') }
+    const chart1Data = this.props.chartData.map(instance => {
+      return instance.slice(0, 5)
+    })
+    const chart2Data = this.props.chartData.map(instance => {
+      return [...instance.slice(0, 1), ...instance.slice(4, 6)]
+    })
+    const chart3Data = this.props.chartData.map(instance => {
+      return [...instance.slice(0, 1), ...instance.slice(6)]
+    })
+    chart2Data.length ? console.log(chart2Data[0].length) : console.log('first render')
     return (
       <div id='historicalData'>
-        <Charts chartData={this.props.chartData} chartName={this.props.chartName} />
         <FormUpdateIndicators handlePullData={this.handlePullData} handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
+        <Charts chartData={chart1Data} chartName={this.props.chartName} />
+        {!!chart2Data.length && !!(chart2Data[0].length - 1) && <Charts chartData={chart2Data} chartName='mAve and mSig' />}
+        {!!chart3Data[0] && !!(chart2Data[0].length - 1) && <Charts chartData={chart3Data} chartName='rSig' />}
+        <button type='button' onClick={() => { this.handlePullData() }} className="btn btn-primary" style={{ display: 'block', margin: 'auto', background: 'red' }}>Pull Data</button>
       </div >
     )
   }

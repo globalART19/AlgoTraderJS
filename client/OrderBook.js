@@ -1,6 +1,5 @@
 import React from 'react'
 import Charts from './Charts'
-import FakeChart from './FakeChart'
 
 
 class OrderBook extends React.Component {
@@ -23,7 +22,7 @@ class OrderBook extends React.Component {
   render() {
     return (
       <div>
-        {(this.props.chartName !== 'OrderBook') ? <FakeChart /> : <Charts chartData={this.props.chartData} chartName={this.props.chartName} />}
+        {<Charts chartData={this.props.chartData} chartName={this.props.chartName} />}
       </div >
     )
   }

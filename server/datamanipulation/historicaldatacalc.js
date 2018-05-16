@@ -2,7 +2,6 @@ const indicators = require('./indicatorcalcs')
 const { HistoricalData } = require('../db')
 
 const calculateIndicators = async function (granularity, period, curHistData) {
-  console.log('in calculateIndicators', granularity, period)
   let histData
   if (!curHistData) {
     const newData = await HistoricalData.findAll({ attributes: ['histTime', 'close'], order: ['histTime', 'ASC'] })
@@ -10,8 +9,7 @@ const calculateIndicators = async function (granularity, period, curHistData) {
   } else {
     histData = curHistData.map((item) => { return [item[0], item[1]] })
   }
-  const dataPointsPerPeriod = Math.floor(period / granularity)
-  console.log('DPPP', dataPointsPerPeriod)
+  const dataPointsPerPeriod = Math.floor(period / granularity) > 0 ? Math.floor(period / granularity) : 1
   const sortedHistData = histData.sort((a, b) => a[0] - b[0])
   sortedHistData.forEach((item, i, histDataArray) => {
     let m12ema = null
@@ -34,7 +32,6 @@ const calculateIndicators = async function (granularity, period, curHistData) {
     }
     item.push(m12ema, m26ema, mave, msig, rsi)
   })
-  console.log('Calculations complete')
   return sortedHistData
 }
 

@@ -64,5 +64,4 @@ const rsi = function (histData, index, period) {
   return 100 - 100 / (1 + (gain / numGain) / (Math.abs(loss) / numLoss))
 }
 
-
 module.exports = { m12ema, m26ema, msig, rsi }

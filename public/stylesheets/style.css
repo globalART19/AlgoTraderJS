@@ -8,13 +8,23 @@ a {
   color: #00B7FF;
 }
 
+.flex-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between
+}
 .productselector {
-  display: inline;
-  position: relative;
+  float: left;
+  color: white;
+  border: 1px solid gray;
+  border-radius: 0 0 25% 25%;
   background: blue;
 }
 .chartoptions {
-  display: inline;
+  float: right;
+  color: white;
+  border: 1px solid gray;
+  border-radius: 0 0 25% 25%;
   background: green;
 }
 .ct-zoom-rect {
@@ -24,18 +34,34 @@ a {
 .newsblurb {
   margin: 1em;
   background: rgb(194, 104, 119);
+  height: 10em;
 }
-
+.content {
+  margin-top: 10px;
+}
+#leftColumn1 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-right: 2em;
+  justify-content: flex-start;
+}
+#rightColumn1 {
+  display: flex;
+  flex-direction: column;
+  /* width: 40em; */
+}
 #pcnavbar {
   display: flex;
+  justify-content: space-between;
   width: 100%;
 }
 #performanceblock {
   position: relative;
   background: black;
   color: gainsboro;
-  width: 60%;
-  height: 30em;
+  width: 100%;
+  height: calc(50% - 1em);
   padding: 1em;
   margin-right: 2em;
 }
@@ -51,19 +77,19 @@ a {
   background: yellow;
   color: black;
 }
-#level2chart {
+#level2block {
   position: relative;
   background: black;
   color: gainsboro;
-  width: 60%;
-  height: 25em;
+  width: 100%;
+  height: calc(50% - 1em);
   padding: 1em;
   margin-right: 2em;
   margin-top: 1em;
 }
 #performancedata {
   position: relative;
-  width: 38%;
+  width: 25em;
   height: 50em;
   padding: 1em;
   background: gray;
@@ -86,14 +112,23 @@ a {
   background: orange;
 }
 #ad {
-  position: relative;
-  width: 38%;
+  width: 100%;
   height: 20em;
   padding: 1em;
+  margin: 2em 0;
   background: green;
 }
 #news {
+  display: relative;
   background: thistle;
+  padding-bottom: 1px;
+}
+#news-header {
+  position: relative;
+}
+#news-picker {
+  position: absolute;
+  z-index: 1;
 }
 
 #right-nav-items {
@@ -109,10 +144,4 @@ a {
 
 #footer {
   text-align: center;
-  /* position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  padding-bottom: 10px;
-  background: inherit; */
 }
