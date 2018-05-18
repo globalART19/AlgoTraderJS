@@ -4,7 +4,6 @@ const { calculateIndicators } = require('../datamanipulation/historicaldatacalc'
 
 router.get('/', async (req, res, next) => {
   try {
-    console.log('Get Data API')
     const historicalData = await HistoricalData.findAll()
     res.json(historicalData)
   } catch (e) {
@@ -14,7 +13,6 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    console.log('Import Data API')
     const sDate = new Date(2017, 4, 1, 0, 0, 0)
     const eDate = new Date(2018, 4, 2, 0, 0, 0)
     await HistoricalData.importHistory('BTC-USD', sDate, eDate, req.body.period)

@@ -2,6 +2,7 @@ import React from 'react'
 import Charts from './Charts'
 import axios from 'axios'
 import FormUpdateIndicators from './FormUpdateIndicators'
+import AlgorithmResults from './AlgorithmResults'
 
 
 class HistoricalData extends React.Component {
@@ -13,18 +14,11 @@ class HistoricalData extends React.Component {
     }
     this.handlePullData = this.handlePullData.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleChange = this.handleChange.bind(this)
   }
-  async handlePullData(event) {
-    event.preventDefault()
+  async handlePullData() {
     await axios.post('/api/historicaldata/', { 'period': this.state.period, 'granularity': this.state.granularity })
     this.setState(this.state)
     console.log('historical data pull complete')
-  }
-  handleChange(event) {
-    // this.setState({
-    //   [event.target.name]: event.target.value * 3600
-    // })
   }
   async handleSubmit(event) {
     event.preventDefault()
@@ -46,10 +40,10 @@ class HistoricalData extends React.Component {
     const chart3Data = this.props.chartData.map(instance => {
       return [...instance.slice(0, 1), ...instance.slice(6)]
     })
-    chart2Data.length ? console.log(chart2Data[0].length) : console.log('first render')
     return (
       <div id='historicalData'>
-        <FormUpdateIndicators handlePullData={this.handlePullData} handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
+        <FormUpdateIndicators handlePullData={this.handlePullData} handleSubmit={this.handleSubmit} />
+        <AlgorithmResults />
         <Charts chartData={chart1Data} chartName={this.props.chartName} />
         {!!chart2Data.length && !!(chart2Data[0].length - 1) && <Charts chartData={chart2Data} chartName='mAve and mSig' />}
         {!!chart3Data[0] && !!(chart2Data[0].length - 1) && <Charts chartData={chart3Data} chartName='rSig' />}
