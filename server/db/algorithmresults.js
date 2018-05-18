@@ -19,12 +19,24 @@ AlgorithmResults.calcReturns = async function () {
 AlgorithmResults.calcMaxReturn = async function () {
   const histData = await HistoricalData.findAll({ attributes: ['histTime', 'close'], order: [['histTime', 'ASC']] })
   console.log(histData[0].dataValues.close)
-  let prevVal = histData[0].dataValues.close
-  const maxReturn = histData.reduce((acc, curVal) => {
-    const delta = curVal.dataValues.close - prevVal
-    prevVal = curVal.dataValues.close
-    console.log('accumulator', acc)
-    return delta > 0 ? acc + delta : acc
+  let lastSell = histData[0].dataValues.close
+  let prevVal = firstVal
+  let curQty = 1
+  let firstDecline = true
+  const maxReturn = histData.reduce((acc, curTick) => {
+    const curVal = curTick.dataValues.close
+    const delta = curVal - prevVal
+    if (delta > 0) {
+      prevVal = curVal
+      firstDecline = true
+      return acc + delta * curQty
+    }
+    if (firstDecline) {
+      firstDecline = false
+      curQty = curQty * prevVal / lastSell
+      prevVal = curVal
+    }
+    return acc
   }, 0)
   console.log(maxReturn)
   return maxReturn
