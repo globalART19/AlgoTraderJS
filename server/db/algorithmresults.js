@@ -1,7 +1,7 @@
 const db = require('./db')
 const Sequelize = require('sequelize')
 const { calcAlgoReturn } = require('../datamanipulation/algorithm')
-const { HistoricalData } = require('../db/historicaldata')
+const { HistoricalData } = require('./historicaldata')
 
 const AlgorithmResults = db.define('algorithmresults', {
   maxReturn: Sequelize.BIGINT,
