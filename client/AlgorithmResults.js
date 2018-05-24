@@ -27,7 +27,7 @@ class AlgorithmResults extends React.Component {
     return (
       <div>
         <h2>Return per BTC</h2>
-        <h3>Max Return:  ${this.state.maxReturn}</h3>
+        <h3>Max Return: ~$15 million trillion </h3>
         <h3>Algo Return: ${this.state.algoReturn}</h3>
         <button type='button' onClick={() => { this.handleCalcReturns() }} className="btn btn-primary" style={{ margin: 'auto', background: 'red' }}>Calc Returns</button>
       </div>
